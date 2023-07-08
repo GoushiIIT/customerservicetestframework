@@ -103,8 +103,8 @@ jobs:
         workingDirectory: $(Pipeline.Workspace)
         displayName: 'Merge Test Results to report html'
       - script: |
-          TEST_RESULT=$(cat ${{ parameters.TEST_SUITE_PATH }}/test-results/reports/mochareports/report.json | jq '.stats.passPercent')
-          TEST_COUNT=$(cat ${{ parameters.TEST_SUITE_PATH }}/test-results/reports/mochareports/report.json | jq '.stats.tests')
+          TEST_RESULT=$(cat test-results/reports/mochareports/report.json | jq '.stats.passPercent')
+          TEST_COUNT=$(cat test-results/reports/mochareports/report.json | jq '.stats.tests')
               
           if [ -z $TEST_RESULT ]; then 
             TEST_RESULT='N/A'

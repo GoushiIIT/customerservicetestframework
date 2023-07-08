@@ -24,6 +24,11 @@ jobs:
         inputs:
           command: 'install'
           verbose: true
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          customRegistry: 'useFeed'
+          customFeed: 'f23cd59a-4a93-434a-b955-f9b8a7faf876/0fecebda-36ac-4ea9-8d3b-b8fbc9a4884b'
       - task: DownloadSecureFile@1
         name: testConfig
         displayName: 'Download Env Cypress Secret File'
@@ -130,7 +135,7 @@ jobs:
         inputs:
           targetPath: '$(Pipeline.Workspace)/grp2'
           artifactName: 'combined-results'
-      - template: ./sendnotification.yml
+      - template: "sendnotification.yml"
         parameters:
           PIPELINE_NAME: Component Suite Execution
           TEST_RESULT: $(TEST_RESULT)

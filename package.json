@@ -15,9 +15,11 @@
     "mocha": "^8.3.2",
     "mochawesome": "^6.2.2",
     "mochawesome-merge": "^4.2.0",
-    "mochawesome-report-generator": "^5.2.0"  },
+    "mochawesome-report-generator": "^5.2.0"
+  },
   "dependencies": {
     "@neuralegion/cypress-har-generator": "^5.16.4",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "microserviceautomationframework": "^1.0.0"
   }
 }

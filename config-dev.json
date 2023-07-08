@@ -1,0 +1,4 @@
+{
+    "specPattern": "**/**.cy.js",
+    "excludeSpecPattern": []
+}

@@ -1,0 +1,95 @@
+
+pool: Test Runner Agent
+
+
+jobs:
+  - job: integration_test_job
+    displayName: Run integration test suite
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js'
+      - task: Npm@1
+        displayName: 'Install Environment Dependencies'
+        inputs:
+          command: 'install'
+          verbose: true
+      - task: DownloadSecureFile@1
+        name: testConfig
+        displayName: 'Download Env Cypress Secret File'
+        inputs:
+          secureFile: "cypress.env.json"
+      - script: |
+          set -e
+          copy /Y $(testConfig.secureFilePath) cypress.env.json
+        displayName: 'Move Cypress Secret File to Test Suite Directory'
+      - task: DownloadSecureFile@1
+        name: pemConfig
+        displayName: 'Download Private Key File'
+        inputs:
+          secureFile: "mykey.pem"
+      - script: |
+          set -e
+          copy /Y $(pemConfig.secureFilePath) mykey.pem
+        displayName: 'Move Private Key Secret File to Test Suite Directory'
+      - script: |
+          set -e
+          npm run integrationtest
+          npm run posttest
+        displayName: "Running Test Suite"
+        env:
+          CYPRESS_PROCESS_PROFILER_INTERVAL: 60000
+      - script: |
+          IF exist test-results (rmdir /s /q test-results) else (echo "Previous test results doesn't exist")
+          mkdir test-results
+          move cypress/reports test-results/
+          if exist cypress/screenshots (move cypress/screenshots test-results/)
+          if exist cypress/utils (move cypress/utils test-results/)
+          if exist cypress/videos (move cypress/videos test-results/)
+          if exist cypress/hars (move cypress/hars test-results/)
+          if exist cypress/logs (move cypress/logs test-results/)
+        displayName: "Grouping Test Suite Results for Publishing"
+      - task: PublishPipelineArtifact@1
+        name: publishRecording
+        condition: succeededOrFailed()
+        displayName: 'Publish Test Suite Results'
+        inputs:
+          targetPath: './test-results'
+          artifactName: 'integration_test'
+  - job: contract_test_job
+    displayName: Run contract test suite
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js'
+      - task: Npm@1
+        displayName: 'Install Environment Dependencies'
+        inputs:
+          command: 'install'
+          verbose: true
+      - script: |
+          set -e
+          npm run contracttest
+          npm run posttest
+        displayName: "Running Test Suite"
+        env:
+          CYPRESS_PROCESS_PROFILER_INTERVAL: 60000
+      - script: |
+          IF exist test-results (rmdir /s /q test-results) else (echo "Previous test results doesn't exist")
+          mkdir test-results
+          move cypress/reports test-results/
+          if exist cypress/screenshots (move cypress/screenshots test-results/)
+          if exist cypress/utils (move cypress/utils test-results/)
+          if exist cypress/videos (move cypress/videos test-results/)
+          if exist cypress/hars (move cypress/hars test-results/)
+          if exist cypress/logs (move cypress/logs test-results/)
+        displayName: "Grouping Test Suite Results for Publishing"
+      - task: PublishPipelineArtifact@1
+        name: publishRecording
+        condition: succeededOrFailed()
+        displayName: 'Publish Test Suite Results'
+        inputs:
+          targetPath: './test-results'
+          artifactName: 'contract_test'

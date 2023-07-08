@@ -29,6 +29,7 @@ jobs:
           command: 'install'
           customRegistry: 'useFeed'
           customFeed: 'f23cd59a-4a93-434a-b955-f9b8a7faf876/0fecebda-36ac-4ea9-8d3b-b8fbc9a4884b'
+        displayName: 'Install Plugin Dependencies'
       - task: DownloadSecureFile@1
         name: testConfig
         displayName: 'Download Env Cypress Secret File'

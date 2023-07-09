@@ -1,5 +1,6 @@
-import { RequestStatusCodes, RequestMethodType } from "microserviceautomationframework/cypress/constants";
-import { EnvironmentConfig, ProductConfig } from "microserviceautomationframework/cypress/configs";
+const RequestStatusCodes = require("microserviceautomationframework").RequestStatusCodes
+const RequestMethodType = require("microserviceautomationframework").RequestMethodType
+const ApplicationRoutes = require("microserviceautomationframework").ApplicationRoutes
 
 describe("Consumer API Component Tests", () => {
 
@@ -61,7 +62,7 @@ describe("Consumer API Component Tests", () => {
 
         cy.executeAPIRequest(
             RequestMethodType.Get,
-            ProductConfig.ApplicationRoutes.customer,
+            ApplicationRoutes.customer,
             null,
             false
         ).then(response => {

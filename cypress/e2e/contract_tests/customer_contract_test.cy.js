@@ -1,9 +1,11 @@
-import { EnvironmentConfig, ProductConfig } from "microserviceautomationframework/cypress/configs";
 import { OrderPage } from "../../../pageobjects";
 
+const EnvironmentConfig = require("microserviceautomationframework").EnvironmentConfig;
+const ApplicationRoutes = require("microserviceautomationframework").ApplicationRoutes;
+
 const orderFormQuery = "?orderId=0"
-const orderStatusURL = ProductConfig.ApplicationRoutes.order.default + ProductConfig.ApplicationRoutes.order.orderStatus + orderFormQuery
-const paymentURL = ProductConfig.ApplicationRoutes.payment
+const orderStatusURL = ApplicationRoutes.order.default + ApplicationRoutes.order.orderStatus + orderFormQuery
+const paymentURL = ApplicationRoutes.payment
 
 describe("Consumer driven contract verification for the Customer API", () => {
 

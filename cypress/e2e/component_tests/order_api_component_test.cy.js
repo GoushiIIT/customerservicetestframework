@@ -1,4 +1,5 @@
-import { RequestMethodType, RequestStatusCodes } from "microserviceautomationframework/cypress/constants";
+const RequestStatusCodes = require("microserviceautomationframework").RequestStatusCodes;
+const ApplicationRoutes = require("microserviceautomationframework").ApplicationRoutes;
 
 describe("Order API Component Tests", () => {
 

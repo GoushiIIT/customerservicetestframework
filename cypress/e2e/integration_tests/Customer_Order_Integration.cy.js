@@ -1,6 +1,4 @@
-import { RequestMethodType, RequestStatusCodes } from "microserviceautomationframework/cypress/constants/";
-
-/// <reference types="cypress" />
+const RequestStatusCodes = require("microserviceautomationframework").RequestStatusCodes
 
 describe("Verify the integration between Customer and Order API", () => {
 

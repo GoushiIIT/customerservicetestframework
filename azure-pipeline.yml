@@ -2,6 +2,14 @@
 
 pool: Test Runner Agent
 
+parameters:
+  - name: 'PIPELINE_NAME'
+    type: string
+  - name: 'TEST_RESULT'
+    type: string
+  - name: 'TEST_COUNT'
+    type: string
+
 jobs:
   - job: test_job
     strategy:

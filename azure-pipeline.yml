@@ -79,8 +79,8 @@ jobs:
   #         targetPath: './test-results'
   #         artifactName: $(groupName)
   - job: combine
-    dependsOn: test_job
-    condition: succeededOrFailed()
+    # dependsOn: test_job
+    # condition: succeededOrFailed()
     displayName: Merge Test Results
     steps:
       # - task: DownloadPipelineArtifact@2

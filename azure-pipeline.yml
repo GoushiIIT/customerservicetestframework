@@ -114,7 +114,7 @@ jobs:
         inputs:
           targetType: 'inline'
           script: |
-            Write-Host "Set Web to $(MyWebEnv)"
+            Write-Host "Set Web to $(TEST_RESULT)"
             Write-Host "Set App to $(MyAppEnv)"
       # - task: PublishPipelineArtifact@1
       #   name: publishRecording

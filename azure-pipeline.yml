@@ -110,6 +110,12 @@ jobs:
       #   workingDirectory: $(Pipeline.Workspace)
       #   displayName: 'Merge Test Results to report html'
       - powershell: .\script.ps1
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            Write-Host "Set Web to $(MyWebEnv)"
+            Write-Host "Set App to $(MyAppEnv)"
       # - task: PublishPipelineArtifact@1
       #   name: publishRecording
       #   condition: succeededOrFailed()

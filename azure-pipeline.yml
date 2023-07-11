@@ -83,6 +83,7 @@ jobs:
     # condition: succeededOrFailed()
     displayName: Merge Test Results
     steps:
+      - checkout: none
       # - task: DownloadPipelineArtifact@2
       #   inputs:
       #     buildType: 'current'
@@ -109,7 +110,7 @@ jobs:
       #   workingDirectory: $(Pipeline.Workspace)
       #   displayName: 'Merge Test Results to report html'
       - powershell: .\script.ps1
-      - powershell: "Write-Host "Set Web to $(MyWebEnv)""
+      - powershell: "Write-Host "Set Web to $(MyWebEnv)"
       # - task: PublishPipelineArtifact@1
       #   name: publishRecording
       #   condition: succeededOrFailed()

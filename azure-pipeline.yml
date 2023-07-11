@@ -109,7 +109,41 @@ jobs:
       #     npx marge reports\mochareports\report.json -o reports\mochareports --reportTitle "Component Test Execution - $(Build.BuildNumber)"
       #   workingDirectory: $(Pipeline.Workspace)
       #   displayName: 'Merge Test Results to report html'
-      - powershell: .\script.ps1
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            $TEST_RESULT ="some-web"
+            $app ="some-app"
+            
+            Write-Host "##vso[task.setvariable variable=TEST_RESULT;]$TEST_RESULT"
+            Write-Host "##vso[task.setvariable variable=MyAppEnv;]$app"
+            
+            cd grp2
+            $TEST_RESULT =$(cat reports/mochareports/report.json | jq '.stats.passPercent')
+            $TEST_COUNT =$(cat reports/mochareports/report.json | jq '.stats.tests') 
+            
+            echo $TEST_RESULT
+            echo $TEST_COUNT
+                
+            if ( $TEST_RESULT -eq  $null ) 
+            {
+                $TEST_RESULT ="N/A"
+                $TEST_STATUS ="N/A"
+                $TEST_COUNT ="N/A"
+            }
+            elseif (${TEST_RESULT%%.*} -eq 100 ) 
+            {
+                $TEST_STATUS ="Succeeded"
+            }
+            else
+            {
+                $TEST_STATUS ="Failed"
+            }
+                
+            Write-Host "##vso[task.setvariable variable=TEST_RESULT;]$TEST_RESULT"
+            Write-Host "##vso[task.setvariable variable=TEST_STATUS;]$TEST_STATUS"
+            Write-Host "##vso[task.setvariable variable=TEST_COUNT;]$TEST_COUNT"
       - task: PowerShell@2
         inputs:
           targetType: 'inline'

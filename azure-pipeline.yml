@@ -108,10 +108,7 @@ jobs:
           npx marge reports\mochareports\report.json -o reports\mochareports --reportTitle "Component Test Execution - $(Build.BuildNumber)"
         workingDirectory: $(Pipeline.Workspace)
         displayName: 'Merge Test Results to report html'
-      - task: PowerShell@2
-        inputs:
-          targetType: 'filePath'
-          filePath: 'script.ps1'
+      - powershell: .\script.ps1
       - task: PublishPipelineArtifact@1
         name: publishRecording
         condition: succeededOrFailed()

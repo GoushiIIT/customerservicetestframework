@@ -95,29 +95,30 @@ jobs:
       #   inputs:
       #     SourceFolder: '$(Pipeline.Workspace)/grp1'
       #     TargetFolder: '$(Pipeline.Workspace)/grp2' 
-      - script: | 
-          npm install mochawesome mochawesome-report-generator mochawesome-merge jq
-        displayName: 'Install required dependencies'
-      - script: | 
-          cd grp2
-          npx mochawesome-merge reports/mocha/*.json -o reports/mochareports/report.json 
-        workingDirectory: $(Pipeline.Workspace)
-        displayName: 'Merge Test Results to report json'
-      - script: | 
-          cd grp2
-          npx marge reports\mochareports\report.json -o reports\mochareports --reportTitle "Component Test Execution - $(Build.BuildNumber)"
-        workingDirectory: $(Pipeline.Workspace)
-        displayName: 'Merge Test Results to report html'
+      # - script: | 
+      #     npm install mochawesome mochawesome-report-generator mochawesome-merge jq
+      #   displayName: 'Install required dependencies'
+      # - script: | 
+      #     cd grp2
+      #     npx mochawesome-merge reports/mocha/*.json -o reports/mochareports/report.json 
+      #   workingDirectory: $(Pipeline.Workspace)
+      #   displayName: 'Merge Test Results to report json'
+      # - script: | 
+      #     cd grp2
+      #     npx marge reports\mochareports\report.json -o reports\mochareports --reportTitle "Component Test Execution - $(Build.BuildNumber)"
+      #   workingDirectory: $(Pipeline.Workspace)
+      #   displayName: 'Merge Test Results to report html'
       - powershell: .\script.ps1
-      - task: PublishPipelineArtifact@1
-        name: publishRecording
-        condition: succeededOrFailed()
-        displayName: 'Publish Test Suite Results'
-        inputs:
-          targetPath: '$(Pipeline.Workspace)/grp2'
-          artifactName: 'combined-results'
-      - template: "sendnotification.yml"
-        parameters:
-          PIPELINE_NAME: Component Suite Execution
-          TEST_RESULT: $(TEST_RESULT)
-          TEST_COUNT: $(TEST_COUNT)
+      - powershell: "Write-Host "Set Web to $(MyWebEnv)""
+      # - task: PublishPipelineArtifact@1
+      #   name: publishRecording
+      #   condition: succeededOrFailed()
+      #   displayName: 'Publish Test Suite Results'
+      #   inputs:
+      #     targetPath: '$(Pipeline.Workspace)/grp2'
+      #     artifactName: 'combined-results'
+      # - template: "sendnotification.yml"
+      #   parameters:
+      #     PIPELINE_NAME: Component Suite Execution
+      #     TEST_RESULT: $(TEST_RESULT)
+      #     TEST_COUNT: $(TEST_COUNT)

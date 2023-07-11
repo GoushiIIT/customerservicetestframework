@@ -110,34 +110,8 @@ jobs:
         displayName: 'Merge Test Results to report html'
       - task: PowerShell@2
         inputs:
-          targetType: 'inline'
-          script: |
-            cd grp2
-            $TEST_RESULT=$(cat reports/mochareports/report.json | jq '.stats.passPercent')
-            $TEST_COUNT=$(cat reports/mochareports/report.json | jq '.stats.tests') 
-                
-            if ( $TEST_RESULT -eq  $null ) 
-            {
-                $TEST_RESULT='N/A'
-                $TEST_STATUS='N/A'
-                $TEST_COUNT='N/A'
-            }
-            elseif (${TEST_RESULT%%.*} -eq 100 ) 
-            {
-                $TEST_STATUS='Succeeded'
-            }
-            else
-            {
-              $TEST_STATUS='Failed'
-              echo "##vso[task.setvariable variable=TEST_RESULT]$TEST_RESULT"
-              echo "##vso[task.setvariable variable=TEST_STATUS]$TEST_STATUS}
-              echo "##vso[task.setvariable variable=TEST_COUNT]$TEST_COUNT"
-              exit 1
-            }
-                
-            echo "##vso[task.setvariable variable=TEST_RESULT]$TEST_RESULT"
-            echo "##vso[task.setvariable variable=TEST_STATUS]$TEST_STATUS"
-            echo "##vso[task.setvariable variable=TEST_COUNT]$TEST_COUNT"
+          targetType: 'filePath'
+          filePath: 'script.ps1'
       - task: PublishPipelineArtifact@1
         name: publishRecording
         condition: succeededOrFailed()

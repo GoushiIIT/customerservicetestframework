@@ -19,7 +19,8 @@ steps:
 
             $TITLE="$(PIPELINE_NAME) - Execution Result"
 
-            $body={
+            $body=$(cat << EOF
+              {
                 "cards": [
                   {
                     "header": {
@@ -64,8 +65,10 @@ steps:
                   }
                 ]
               }
+            EOF
+            )
 
-            echo $body
+            GOOGLE_CHAT_URL="https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY"
 
             curl \
             -X POST \

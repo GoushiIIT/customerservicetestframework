@@ -19,8 +19,7 @@ steps:
 
             $TITLE="$(PIPELINE_NAME) - Execution Result"
 
-            body=$(cat << EOF
-              {
+            $body={
                 "cards": [
                   {
                     "header": {
@@ -65,13 +64,11 @@ steps:
                   }
                 ]
               }
-            EOF
-            )
 
-            GOOGLE_CHAT_URL="https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY"
+            echo $body
 
             curl \
             -X POST \
             -H 'Content-Type: application/json' \
-            "https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY" \
+            "https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY"
             -d "$body"

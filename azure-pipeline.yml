@@ -113,12 +113,6 @@ jobs:
         inputs:
           targetType: 'inline'
           script: |
-            $TEST_RESULT ="some-web"
-            $app ="some-app"
-            
-            Write-Host "##vso[task.setvariable variable=TEST_RESULT;]$TEST_RESULT"
-            Write-Host "##vso[task.setvariable variable=MyAppEnv;]$app"
-            
             cd grp2
             $TEST_RESULT =$(cat reports/mochareports/report.json | jq '.stats.passPercent')
             $TEST_COUNT =$(cat reports/mochareports/report.json | jq '.stats.tests') 
@@ -132,7 +126,7 @@ jobs:
                 $TEST_STATUS ="N/A"
                 $TEST_COUNT ="N/A"
             }
-            elseif (${TEST_RESULT%%.*} -eq 100 ) 
+            elseif ($TEST_RESULT -eq 100 ) 
             {
                 $TEST_STATUS ="Succeeded"
             }

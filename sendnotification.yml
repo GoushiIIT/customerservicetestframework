@@ -7,69 +7,73 @@ parameters:
     type: string
 
 steps:
-  - script: |
-          IMAGE_URL="https://www.iconfinder.com/icons/1398912/download/png/512"
-          if [[ "${AGENT_JOBSTATUS}" != "Succeeded" ]]; then
-            IMAGE_URL="https://www.iconfinder.com/icons/1398917/download/png/512"
-          fi
-
-          TITLE="${PIPELINE_NAME} - Execution Result"
-
-          body=$(cat << EOF
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: |
+            $IMAGE_URL="https://www.iconfinder.com/icons/1398912/download/png/512"
+            if ($(TEST_STATUS) -eq "Failed" ) 
             {
-              "cards": [
-                {
-                  "header": {
-                    "title": "${TITLE} - ${AGENT_JOBSTATUS}",
-                    "subtitle": "Asgardeo DevOps",
-                    "imageUrl": "${IMAGE_URL}"
-                  },
-                  "sections": [
-                    {
-                      "widgets": [
-                        {
-                          "keyValue": {
-                            "topLabel": "Pipeline Build Number",
-                            "content": "$(Build.BuildNumber)",
-                            "button": {
-                              "textButton": {
-                                "text": "View",
-                                "onClick": {
-                                  "openLink": {
-                                    "url": "https://dev.azure.com/Asgardeo-DevOps/$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)&view=logs"
-                                  }  
-                                } 
+              $IMAGE_URL="https://www.iconfinder.com/icons/1398917/download/png/512"
+            }
+
+            $TITLE="$(PIPELINE_NAME) - Execution Result"
+
+            body=$(cat << EOF
+              {
+                "cards": [
+                  {
+                    "header": {
+                      "title": "$(TITLE) - $(TEST_STATUS)",
+                      "subtitle": "Asgardeo DevOps",
+                      "imageUrl": "$(IMAGE_URL)"
+                    },
+                    "sections": [
+                      {
+                        "widgets": [
+                          {
+                            "keyValue": {
+                              "topLabel": "Pipeline Build Number",
+                              "content": "$(Build.BuildNumber)",
+                              "button": {
+                                "textButton": {
+                                  "text": "View",
+                                  "onClick": {
+                                    "openLink": {
+                                      "url": "https://dev.azure.com/Asgardeo-DevOps/$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)&view=logs"
+                                    }  
+                                  } 
+                                }
                               }
                             }
+                          },
+                          {
+                            "keyValue": {
+                              "topLabel": "Test pass percent",
+                              "content": "$(TEST_RESULT)"
+                            }
+                          },
+                          {
+                            "keyValue": {
+                              "topLabel": "Executed test count",
+                              "content": "$(TEST_COUNT)"
+                            }
                           }
-                        },
-                        {
-                          "keyValue": {
-                            "topLabel": "Test pass percent",
-                            "content": "${TEST_RESULT}"
-                          }
-                        },
-                        {
-                          "keyValue": {
-                            "topLabel": "Executed test count",
-                            "content": "${TEST_COUNT}"
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          EOF
-          )
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            EOF
+            )
 
-          GOOGLE_CHAT_URL="https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY"
+            GOOGLE_CHAT_URL="https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY"
 
-          curl \
-          -X POST \
-          -H 'Content-Type: application/json' \
-          "https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY" \
-          -d "$body"
+            curl \
+            -X POST \
+            -H 'Content-Type: application/json' \
+            "https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY" \
+            -d "$body"
     displayName: 'Send Notification'
     condition: always()

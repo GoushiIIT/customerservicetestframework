@@ -12,7 +12,7 @@ steps:
           targetType: 'inline'
           script: |
             $IMAGE_URL="https://www.iconfinder.com/icons/1398912/download/png/512"
-            if ($(TEST_STATUS) -eq "Failed" ) 
+            if ("$(TEST_STATUS)" -eq "Failed" ) 
             {
               $IMAGE_URL="https://www.iconfinder.com/icons/1398917/download/png/512"
             }

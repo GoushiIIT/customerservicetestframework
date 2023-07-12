@@ -145,7 +145,6 @@ jobs:
             Write-Host "Set Web to $(TEST_RESULT)"
             Write-Host "Set Web to $(TEST_STATUS)"
             Write-Host "Set Web to $(TEST_COUNT)"
-            Write-Host "Set App to $(MyAppEnv)"
       - task: PublishPipelineArtifact@1
         name: publishRecording
         condition: succeededOrFailed()

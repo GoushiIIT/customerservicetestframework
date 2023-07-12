@@ -17,7 +17,7 @@ steps:
               $IMAGE_URL="https://www.iconfinder.com/icons/1398917/download/png/512"
             }
 
-            $TITLE="$(PIPELINE_NAME) - Execution Result"
+            $TITLE="Component Test Suite - Execution Result"
 
             $body= '{
                 "cards": [

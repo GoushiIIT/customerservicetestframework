@@ -39,7 +39,7 @@ steps:
                                   "text": "View",
                                   "onClick": {
                                     "openLink": {
-                                      "url": "https://dev.azure.com/Asgardeo-DevOps/$(System.TeamProject)/_build/results?buildId=$(Build.BuildId)&view=logs"
+                                      "url": "https://qavsts.visualstudio.com/CustomerService/_build/results?buildId=$(Build.BuildId)&view=results"
                                     }  
                                   } 
                                 }

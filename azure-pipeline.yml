@@ -100,12 +100,12 @@ jobs:
           npm install mochawesome mochawesome-report-generator mochawesome-merge jq
         displayName: 'Install required dependencies'
       - script: | 
-          cd test-results
+          cd grp2
           npx mochawesome-merge reports/mocha/*.json -o reports/mochareports/report.json 
         workingDirectory: $(Pipeline.Workspace)
         displayName: 'Merge Test Results to report json'
       - script: | 
-          cd test-results
+          cd grp2
           npx marge reports\mochareports\report.json -o reports\mochareports --reportTitle "Component Test Execution - $(Build.BuildNumber)"
         workingDirectory: $(Pipeline.Workspace)
         displayName: 'Merge Test Results to report html'
@@ -115,7 +115,7 @@ jobs:
           targetType: 'inline'
           workingDirectory: $(Pipeline.Workspace)
           script: |
-            cd test-results
+            cd grp2
             $TEST_RESULT =$(cat reports/mochareports/report.json | jq '.stats.passPercent')
             $TEST_COUNT =$(cat reports/mochareports/report.json | jq '.stats.tests') 
             

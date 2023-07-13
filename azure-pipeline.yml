@@ -113,7 +113,7 @@ jobs:
         inputs:
           targetType: 'inline'
           script: |
-            cd grp2
+            cd test-results
             $TEST_RESULT =$(cat reports/mochareports/report.json | jq '.stats.passPercent')
             $TEST_COUNT =$(cat reports/mochareports/report.json | jq '.stats.tests') 
             

@@ -100,18 +100,20 @@ jobs:
           npm install mochawesome mochawesome-report-generator mochawesome-merge jq
         displayName: 'Install required dependencies'
       - script: | 
-          cd grp2
+          cd test-results
           npx mochawesome-merge reports/mocha/*.json -o reports/mochareports/report.json 
         workingDirectory: $(Pipeline.Workspace)
         displayName: 'Merge Test Results to report json'
       - script: | 
-          cd grp2
+          cd test-results
           npx marge reports\mochareports\report.json -o reports\mochareports --reportTitle "Component Test Execution - $(Build.BuildNumber)"
         workingDirectory: $(Pipeline.Workspace)
         displayName: 'Merge Test Results to report html'
       - task: PowerShell@2
+        displayName: 'Calculate test results and status'
         inputs:
           targetType: 'inline'
+          workingDirectory: $(Pipeline.Workspace)
           script: |
             cd test-results
             $TEST_RESULT =$(cat reports/mochareports/report.json | jq '.stats.passPercent')
@@ -139,8 +141,10 @@ jobs:
             Write-Host "##vso[task.setvariable variable=TEST_STATUS;]$TEST_STATUS"
             Write-Host "##vso[task.setvariable variable=TEST_COUNT;]$TEST_COUNT"
       - task: PowerShell@2
+        displayName: 'Log the test results'
         inputs:
           targetType: 'inline'
+          workingDirectory: $(Pipeline.Workspace)
           script: |
             Write-Host "Set Web to $(TEST_RESULT)"
             Write-Host "Set Web to $(TEST_STATUS)"

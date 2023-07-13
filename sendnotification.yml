@@ -8,8 +8,10 @@ parameters:
 
 steps:
       - task: PowerShell@2
+        displayName: 'Send notification'
         inputs:
           targetType: 'inline'
+          workingDirectory: $(Pipeline.Workspace)
           script: |
             $IMAGE_URL="https://www.iconfinder.com/icons/1398912/download/png/512"
             if ("Succeeded" -eq "Failed" ) 

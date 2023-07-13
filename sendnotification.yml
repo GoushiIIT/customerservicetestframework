@@ -70,7 +70,7 @@ steps:
 
             $GoogleRequest = @{
                     Uri             = 'https://chat.googleapis.com/v1/spaces/AAAA6cW4diQ/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=5kxAfgxmAr8nFjBsOMNiQZo5BAqI4Wrp5D5ehTxSjXY'
-                    Method          = 'ge'
+                    Method          = 'POST'
                     Headers             = @{'Content-Type' = 'application/json'}
                     Body            = $body
             }

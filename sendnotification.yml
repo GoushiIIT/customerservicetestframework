@@ -12,58 +12,58 @@ steps:
           targetType: 'inline'
           script: |
             $IMAGE_URL="https://www.iconfinder.com/icons/1398912/download/png/512"
-            if ("$(TEST_STATUS)" -eq "Failed" ) 
+            if ("Succeeded" -eq "Failed" ) 
             {
               $IMAGE_URL="https://www.iconfinder.com/icons/1398917/download/png/512"
             }
 
             $TITLE="Component Test Suite - Execution Result"
 
-            $body= '{
-                "cards": [
-                  {
-                    "header": {
-                      "title": "$(TITLE) - $(TEST_STATUS)",
-                      "subtitle": "Asgardeo DevOps",
-                      "imageUrl": "$(IMAGE_URL)"
-                    },
-                    "sections": [
-                      {
-                        "widgets": [
-                          {
-                            "keyValue": {
-                              "topLabel": "Pipeline Build Number",
-                              "content": "$(Build.BuildNumber)",
-                              "button": {
-                                "textButton": {
-                                  "text": "View",
-                                  "onClick": {
-                                    "openLink": {
-                                      "url": "https://qavsts.visualstudio.com/CustomerService/_build/results?buildId=$(Build.BuildId)&view=results"
-                                    }  
-                                  } 
+              $body= '{
+                  "cards": [
+                    {
+                      "header": {
+                        "title": "' + $TITLE + '- Succeeded",
+                        "subtitle": "Asgardeo DevOps",
+                        "imageUrl": "' + $IMAGE_URL + '"
+                      },
+                      "sections": [
+                        {
+                          "widgets": [
+                            {
+                              "keyValue": {
+                                "topLabel": "Pipeline Build Number",
+                                "content": "$(Build.BuildNumber)",
+                                "button": {
+                                  "textButton": {
+                                    "text": "View",
+                                    "onClick": {
+                                      "openLink": {
+                                        "url": "https://qavsts.visualstudio.com/CustomerService/_build/results?buildId=$(Build.BuildId)&view=results"
+                                      }  
+                                    } 
+                                  }
                                 }
                               }
+                            },
+                            {
+                              "keyValue": {
+                                "topLabel": "Test pass percent",
+                                "content": "$(TEST_RESULT)"
+                              }
+                            },
+                            {
+                              "keyValue": {
+                                "topLabel": "Executed test count",
+                                "content": "$(TEST_COUNT)"
+                              }
                             }
-                          },
-                          {
-                            "keyValue": {
-                              "topLabel": "Test pass percent",
-                              "content": "$(TEST_RESULT)"
-                            }
-                          },
-                          {
-                            "keyValue": {
-                              "topLabel": "Executed test count",
-                              "content": "$(TEST_COUNT)"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }' | ConvertFrom-Json
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }'
 
               echo $body
 
